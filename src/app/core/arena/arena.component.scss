@@ -1,0 +1,19 @@
+.container {
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+
+  .loading {
+    text-transform: uppercase;
+  }
+  .arena {
+    background-color: whitesmoke;
+    border: 10px solid black;
+    width: 100dvw;
+    height: 100dvh;
+    position: relative;
+  }
+}
