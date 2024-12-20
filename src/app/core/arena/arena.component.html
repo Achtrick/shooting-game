@@ -1,9 +1,14 @@
 <div class="container">
-  <div class="loading" *ngIf="loading; else matchFound">{{ loadingText }}</div>
-  <ng-template #matchFound>
-    <div class="arena">
-      <player #playerA [type]="PlayerType.PLAYER_A"></player>
-      <player #playerB [type]="PlayerType.PLAYER_B"></player>
+  <p *ngIf="opponentDisconnected; else arena">Opponent Disconnected !</p>
+  <ng-template #arena>
+    <div class="loading" *ngIf="loading; else matchFound">
+      {{ loadingText }}
     </div>
+    <ng-template #matchFound>
+      <div class="arena">
+        <player #playerA [type]="PlayerType.PLAYER_A"></player>
+        <player #playerB [type]="PlayerType.PLAYER_B"></player>
+      </div>
+    </ng-template>
   </ng-template>
 </div>

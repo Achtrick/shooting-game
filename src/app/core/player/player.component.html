@@ -1,5 +1,5 @@
-<span
-  #ragdoll
-  class="player zig-zag-box"
-  [ngStyle]="{ 'background-color': color, left: left }"
-></span>
+<span #ragdoll class="player">
+  <img
+    [src]="type === PlayerType.PLAYER_A ? '/player_a.svg' : '/player_b.svg'"
+  />
+</span>

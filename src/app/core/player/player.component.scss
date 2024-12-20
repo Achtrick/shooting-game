@@ -3,20 +3,12 @@
   width: 40px;
   height: 40px;
   top: calc(50dvh - 20px);
-}
-.zig-zag-box {
-  --s: 2px; /* control the size of the spikes */
-  --w: 40px; /* preferred image width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  width: round(var(--w), 4 * var(--s));
-  aspect-ratio: 1;
-  object-fit: cover;
-  padding: calc(2 * var(--s));
-  box-sizing: border-box;
-  background: #0b486b;
-  --_m: #0000 0 calc(2 * atan(0.5)), #000 0 50%;
-  mask: repeating-conic-gradient(from atan(2) at 50% var(--s), var(--_m))
-      calc(2 * var(--s)) calc(-1 * var(--s)) / calc(4 * var(--s)) 100% intersect,
-    repeating-conic-gradient(from atan(-0.5) at var(--s), var(--_m))
-      calc(-1 * var(--s)) calc(2 * var(--s)) / 100% calc(4 * var(--s));
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }

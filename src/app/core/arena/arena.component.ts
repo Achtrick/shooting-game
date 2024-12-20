@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Room } from '../../models/room.model';
 import { SocketService } from '../../services/socket.service';
 import { PlayerComponent, PlayerType } from '../player/player.component';
@@ -11,11 +12,12 @@ import { PlayerComponent, PlayerType } from '../player/player.component';
   templateUrl: './arena.component.html',
   styleUrl: './arena.component.scss',
 })
-export class ArenaComponent implements OnInit {
+export class ArenaComponent implements OnInit, OnDestroy {
   @ViewChild('playerA') playerA!: PlayerComponent;
   @ViewChild('playerB') playerB!: PlayerComponent;
 
   public loading: boolean = true;
+  public opponentDisconnected: boolean = false;
   public loadingText: string = 'finding match ...';
   public room: Room = new Room();
 
@@ -28,6 +30,7 @@ export class ArenaComponent implements OnInit {
   private isKeyHeld: boolean = false;
   private keyBeingHeld: string = '';
   private intervalId: any = null;
+  private router: Router = new Router();
 
   constructor(private socketService: SocketService) {}
 
@@ -50,6 +53,13 @@ export class ArenaComponent implements OnInit {
       if (!this.isKeyHeld) {
         this.otherPlayer.keyHeld.next(direction);
       }
+    });
+
+    this.socketService.on('OPPONENT_DISCONNECTED', () => {
+      this.opponentDisconnected = true;
+      setTimeout(() => {
+        this.router.navigateByUrl('/');
+      }, 1000);
     });
   }
 
@@ -108,4 +118,8 @@ export class ArenaComponent implements OnInit {
       this.intervalId = null;
     }
   };
+
+  public ngOnDestroy(): void {
+    this.socketService.emit('LEAVE_ROOM', this.playerId);
+  }
 }

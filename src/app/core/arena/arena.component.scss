@@ -5,12 +5,13 @@
   align-items: center;
   justify-content: center;
   background-color: whitesmoke;
+  overflow: hidden;
 
   .loading {
     text-transform: uppercase;
   }
   .arena {
-    background-color: whitesmoke;
+    background-image: url(/arena-pattern.webp);
     border: 10px solid black;
     width: 100dvw;
     height: 100dvh;
