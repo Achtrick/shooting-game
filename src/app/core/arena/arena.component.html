@@ -1,0 +1,38 @@
+<div class="container">
+  <p *ngIf="opponentDisconnected; else arena">Opponent Disconnected !</p>
+  <ng-template #arena>
+    <div class="loading" *ngIf="loading; else matchFound">
+      {{ loadingText }}
+    </div>
+    <ng-template #matchFound>
+      <div class="arena">
+        <div class="round">
+          <p>{{ "round: " + round }}</p>
+        </div>
+        <div class="score">
+          <p>{{ match.scoreB }}</p>
+          &nbsp;-&nbsp;
+          <p>{{ match.scoreA }}</p>
+        </div>
+        <player
+          #playerA
+          [type]="PlayerType.PLAYER_A"
+          [health]="
+            playerType === PlayerType.PLAYER_A
+              ? myPlayerHealth
+              : opponentPlayerHealth
+          "
+        ></player>
+        <player
+          #playerB
+          [type]="PlayerType.PLAYER_B"
+          [health]="
+            playerType === PlayerType.PLAYER_B
+              ? myPlayerHealth
+              : opponentPlayerHealth
+          "
+        ></player>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

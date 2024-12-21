@@ -1,0 +1,14 @@
+<div #ragdoll class="player">
+  <div class="health-bar-container">
+    <div
+      class="health-bar"
+      [ngStyle]="{
+        height: health + '%',
+        backgroundColor: health > 80 ? 'green' : health > 50 ? '#ff9100' : 'red'
+      }"
+    ></div>
+  </div>
+  <img
+    [src]="type === PlayerType.PLAYER_A ? '/player_a.svg' : '/player_b.svg'"
+  />
+</div>
