@@ -16,6 +16,7 @@
         </div>
         <player
           #playerA
+          [disableControls]="!!roundWon.length || !!matchWon.length"
           [type]="PlayerType.PLAYER_A"
           [health]="
             playerType === PlayerType.PLAYER_A
@@ -25,6 +26,7 @@
         ></player>
         <player
           #playerB
+          [disableControls]="!!roundWon.length || !!matchWon.length"
           [type]="PlayerType.PLAYER_B"
           [health]="
             playerType === PlayerType.PLAYER_B
@@ -32,6 +34,9 @@
               : opponentPlayerHealth
           "
         ></player>
+        <div class="announcements" *ngIf="roundWon.length || matchWon.length">
+          <p>{{ matchWon.length ? matchWon : roundWon }}</p>
+        </div>
       </div>
     </ng-template>
   </ng-template>

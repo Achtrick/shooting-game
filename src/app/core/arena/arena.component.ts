@@ -28,6 +28,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
   protected PlayerType = PlayerType;
   protected myPlayerHealth: number = 100;
   protected opponentPlayerHealth: number = 100;
+  protected roundWon: string = '';
+  protected matchWon: string = '';
 
   private myPlayer: PlayerComponent;
   private myPlayerPosition: DOMRect;
@@ -107,10 +109,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
           if (this.opponentPlayerHealth === 0) {
             if (this.myPlayer.type === PlayerType.PLAYER_A) {
               this.match.scoreA += 1;
-              this.reset();
+              this.reset(this.myPlayer);
             } else {
               this.match.scoreB += 1;
-              this.reset();
+              this.reset(this.myPlayer);
             }
           }
           bullet.remove();
@@ -124,10 +126,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
           if (this.myPlayerHealth === 0) {
             if (this.opponentPlayer.type === PlayerType.PLAYER_A) {
               this.match.scoreA += 1;
-              this.reset();
+              this.reset(this.opponentPlayer);
             } else {
               this.match.scoreB += 1;
-              this.reset();
+              this.reset(this.opponentPlayer);
             }
           }
           bullet.remove();
@@ -178,15 +180,38 @@ export class ArenaComponent implements OnInit, OnDestroy {
     );
   }
 
-  private reset(): void {
+  private reset(winner: PlayerComponent): void {
     this.round++;
-    this.myPlayerHealth = 100;
-    this.opponentPlayerHealth = 100;
-    this.myPlayer.initializePlayer();
-    this.opponentPlayer.initializePlayer();
 
-    if (this.round === this.match.rounds) {
-      // Announce winner
+    const recoverHealth = () => {
+      this.myPlayerHealth = 100;
+      this.opponentPlayerHealth = 100;
+      this.myPlayer.initializePlayer();
+      this.opponentPlayer.initializePlayer();
+    };
+
+    if (winner === this.myPlayer) {
+      this.roundWon = 'You won this round 🎉';
+    } else {
+      this.roundWon = 'You lost this round 😔';
+    }
+
+    setTimeout(() => {
+      this.roundWon = '';
+      recoverHealth();
+    }, 5000);
+
+    if (this.round > this.match.rounds) {
+      if (winner === this.myPlayer) {
+        this.roundWon = '🎉 You won the match 🎉';
+      } else {
+        this.roundWon = '😔 You lost the match 😔';
+      }
+      setTimeout(() => {
+        this.matchWon = '';
+        recoverHealth();
+        this.router.navigateByUrl('/');
+      }, 5000);
     }
   }
 

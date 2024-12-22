@@ -37,5 +37,19 @@
       top: -5px;
       left: 5px;
     }
+    .announcements {
+      position: absolute;
+      z-index: 1000;
+      width: 100dvw;
+      height: 100dvh;
+      background-color: transparent;
+      backdrop-filter: blur(15px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      top: 0px;
+      left: 0px;
+    }
   }
 }

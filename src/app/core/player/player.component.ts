@@ -24,6 +24,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() type: PlayerType = PlayerType.PLAYER_A;
   @Input() health: number = 100;
+  @Input() disableControls: boolean = false;
 
   @Output() BulletPosition: EventEmitter<{
     position: DOMRect;
@@ -39,19 +40,25 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   private gunSound: HTMLAudioElement;
 
   constructor() {
-    this.gunSound = new Audio('/gun1.mp3');
-    this.gunSound.load();
+    try {
+      this.gunSound = new Audio('/gun1.mp3');
+      this.gunSound.load();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public ngOnInit(): void {
     this.keyHeld.subscribe((key) => {
-      if (key === ' ') {
-        this.shoot();
-      } else {
-        this.movePlayer(key);
-        this.PlayerPosition.emit(
-          this.ragdoll.nativeElement.getBoundingClientRect()
-        );
+      if (!this.disableControls) {
+        if (key === ' ') {
+          this.shoot();
+        } else {
+          this.movePlayer(key);
+          this.PlayerPosition.emit(
+            this.ragdoll.nativeElement.getBoundingClientRect()
+          );
+        }
       }
     });
   }
