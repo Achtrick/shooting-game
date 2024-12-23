@@ -77,7 +77,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
         localStorage.getItem('PLAYER_ID') ?? crypto.randomUUID()
       );
 
-      this.match = this.room.match;
+      this.match = {
+        scoreA: 0,
+        scoreB: 0,
+        rounds: 6,
+      };
 
       this.playerType =
         this.room.id === this.playerId
@@ -98,9 +102,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.myPlayer =
         this.playerType === PlayerType.PLAYER_A ? this.playerA : this.playerB;
+      this.myPlayerPosition =
+        this.myPlayer.ragdoll.nativeElement.getBoundingClientRect();
 
       this.opponentPlayer =
         this.playerType === PlayerType.PLAYER_A ? this.playerB : this.playerA;
+      this.opponentPlayerPosition =
+        this.myPlayer.ragdoll.nativeElement.getBoundingClientRect();
 
       this.myPlayer.BulletPosition.subscribe(({ bullet, position }) => {
         if (this.positionsIntersects(this.opponentPlayerPosition, position)) {
@@ -200,13 +208,27 @@ export class ArenaComponent implements OnInit, OnDestroy {
       this.roundWon = '';
       recoverHealth();
     }, 5000);
+    console.log(this.match.rounds);
 
-    if (this.round > this.match.rounds) {
-      if (winner === this.myPlayer) {
-        this.roundWon = '🎉 You won the match 🎉';
-      } else {
-        this.roundWon = '😔 You lost the match 😔';
+    if (
+      this.match.rounds / this.match.scoreA === 2 ||
+      this.match.rounds / this.match.scoreB === 2
+    ) {
+      if (this.match.rounds / this.match.scoreA === 2) {
+        if (this.myPlayer.type === PlayerType.PLAYER_A) {
+          this.roundWon = '🎉 You won the match 🎉';
+        } else {
+          this.roundWon = '😔 You lost the match 😔';
+        }
       }
+      if (this.match.rounds / this.match.scoreB === 2) {
+        if (this.myPlayer.type === PlayerType.PLAYER_B) {
+          this.roundWon = '🎉 You won the match 🎉';
+        } else {
+          this.roundWon = '😔 You lost the match 😔';
+        }
+      }
+
       setTimeout(() => {
         this.matchWon = '';
         recoverHealth();

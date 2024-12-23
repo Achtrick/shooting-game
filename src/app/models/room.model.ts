@@ -3,7 +3,6 @@ export class Room {
   isFull: boolean;
   playerA: string;
   playerB: string;
-  match: Match;
 }
 
 export class Match {
