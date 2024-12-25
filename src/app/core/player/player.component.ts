@@ -43,9 +43,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       this.gunSound = new Audio('/gun1.mp3');
       this.gunSound.load();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (err) {}
   }
 
   public ngOnInit(): void {

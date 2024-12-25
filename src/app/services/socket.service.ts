@@ -9,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:5000');
+    this.socket = io('http://192.168.11.138:5000');
   }
 
   public emit(event: string, data: any): void {

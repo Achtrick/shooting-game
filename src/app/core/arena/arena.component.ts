@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { Match, Room } from '../../models/room.model';
 import { SocketService } from '../../services/socket.service';
 import { PlayerComponent, PlayerType } from '../player/player.component';
@@ -39,11 +40,12 @@ export class ArenaComponent implements OnInit, OnDestroy {
   private keyBeingHeld: string = '';
   private intervalId: any = null;
   private router: Router = new Router();
+  private destroy: Subject<void> = new Subject();
 
   constructor(private socketService: SocketService) {}
 
   public async ngOnInit(): Promise<void> {
-    const id = crypto.randomUUID();
+    const id = Math.random().toString(36).substr(2, 9);
     const playerId = localStorage.getItem('PLAYER_ID');
 
     if (playerId) {
@@ -57,8 +59,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     this.initializePlayer();
 
-    this.socketService.on('MOVE', async (direction) => {
-      if (!this.isKeyHeld) {
+    this.socketService.on('MOVE', async ({ playerId, direction }) => {
+      if (this.playerId === playerId) {
+        this.myPlayer.keyHeld.next(direction);
+      } else {
         this.opponentPlayer.keyHeld.next(direction);
       }
     });
@@ -110,24 +114,28 @@ export class ArenaComponent implements OnInit, OnDestroy {
       this.opponentPlayerPosition =
         this.myPlayer.ragdoll.nativeElement.getBoundingClientRect();
 
-      this.myPlayer.BulletPosition.subscribe(({ bullet, position }) => {
-        if (this.positionsIntersects(this.opponentPlayerPosition, position)) {
-          this.opponentPlayerHealth -= 1;
+      this.myPlayer.BulletPosition.pipe(takeUntil(this.destroy)).subscribe(
+        ({ bullet, position }) => {
+          if (this.positionsIntersects(this.opponentPlayerPosition, position)) {
+            this.opponentPlayerHealth -= 1;
 
-          if (this.opponentPlayerHealth === 0) {
-            if (this.myPlayer.type === PlayerType.PLAYER_A) {
-              this.match.scoreA += 1;
-              this.reset(this.myPlayer);
-            } else {
-              this.match.scoreB += 1;
-              this.reset(this.myPlayer);
+            if (this.opponentPlayerHealth === 0) {
+              if (this.myPlayer.type === PlayerType.PLAYER_A) {
+                this.match.scoreA += 1;
+                this.reset(this.myPlayer);
+              } else {
+                this.match.scoreB += 1;
+                this.reset(this.myPlayer);
+              }
             }
+            bullet.remove();
           }
-          bullet.remove();
         }
-      });
+      );
 
-      this.opponentPlayer.BulletPosition.subscribe(({ bullet, position }) => {
+      this.opponentPlayer.BulletPosition.pipe(
+        takeUntil(this.destroy)
+      ).subscribe(({ bullet, position }) => {
         if (this.positionsIntersects(this.myPlayerPosition, position)) {
           this.myPlayerHealth -= 1;
 
@@ -144,13 +152,17 @@ export class ArenaComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.opponentPlayer.PlayerPosition.subscribe((position: DOMRect) => {
+      this.opponentPlayer.PlayerPosition.pipe(
+        takeUntil(this.destroy)
+      ).subscribe((position: DOMRect) => {
         this.opponentPlayerPosition = position;
       });
 
-      this.myPlayer.PlayerPosition.subscribe((position: DOMRect) => {
-        this.myPlayerPosition = position;
-      });
+      this.myPlayer.PlayerPosition.pipe(takeUntil(this.destroy)).subscribe(
+        (position: DOMRect) => {
+          this.myPlayerPosition = position;
+        }
+      );
 
       addEventListener('keydown', this.onKeyDown);
       addEventListener('keyup', this.onKeyUp);
@@ -162,7 +174,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
       this.isKeyHeld = true;
       this.keyBeingHeld = event.key;
       this.intervalId = setInterval(() => {
-        this.myPlayer.keyHeld.next(this.keyBeingHeld);
         this.socketService.emit(
           'MOVE',
           this.playerId + '|' + this.keyBeingHeld
@@ -208,7 +219,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
       this.roundWon = '';
       recoverHealth();
     }, 5000);
-    console.log(this.match.rounds);
 
     if (
       this.match.rounds / this.match.scoreA === 2 ||
@@ -238,6 +248,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
     this.socketService.emit('LEAVE_ROOM', this.playerId);
   }
 }

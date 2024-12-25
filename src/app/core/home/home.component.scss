@@ -1,5 +1,5 @@
 .container {
-  background-image: url(/home-pattern.jpg);
+  background-color: #333;
   background-repeat: repeat;
   width: 100%;
   height: 100dvh;
@@ -8,34 +8,32 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  padding: 10px;
 
   h1 {
     font-weight: 400;
     font-size: 30px;
-    color: transparent;
-    -webkit-text-stroke: 1px #000000;
-    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff,
-      0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 75px #ff00ff;
+    line-height: 20px;
+    color: #ff00ff;
   }
   h3 {
     font-weight: 400;
     font-size: 18px;
-    line-height: 40px;
-    -webkit-text-stroke: 1px #000000;
-    text-shadow: 0 0 5px #fafafa, 0 0 10px #fafafa, 0 0 20px #fafafa,
-      0 0 30px #fafafa, 0 0 40px #fafafa, 0 0 50px #fafafa, 0 0 75px #fafafa;
-    max-width: 40%;
+    line-height: 20px;
+    color: #fafafa;
   }
+
   button {
     font-weight: 400;
     font-size: 25px;
     height: 60px;
     padding: 0px 20px;
     color: white;
-    background-color: #ff00aa;
+    background-color: #ff00ff;
     border: 1px solid white;
     border-radius: 3px;
     cursor: pointer;
+    margin-top: 20px;
   }
 }
 
