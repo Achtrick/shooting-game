@@ -78,7 +78,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
   private async joinMatch(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       this.room = await this.socketService.joinMatch(
-        localStorage.getItem('PLAYER_ID') ?? crypto.randomUUID()
+        localStorage.getItem('PLAYER_ID') ??
+          Math.random().toString(36).substr(2, 9)
       );
 
       this.match = {
