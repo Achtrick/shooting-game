@@ -73,13 +73,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     const player = this.ragdoll.nativeElement;
 
     if (this.type === PlayerType.PLAYER_A) {
-      player.style.left = 'calc(100dvw - 70px)';
-      player.style.top = 'calc(50dvh - 20px)';
+      player.style.left = 'calc(100dvw - 90px)';
+      player.style.top = 'calc(50dvh - 30px)';
       player.style.transform = 'rotate(180deg)';
       this.currentPlayerDirection = PlayerDirection.LEFT;
     } else {
       player.style.left = '10px';
-      player.style.top = 'calc(50dvh - 20px)';
+      player.style.top = 'calc(50dvh - 30px)';
       player.style.transform = 'rotate(0deg)';
       this.currentPlayerDirection = PlayerDirection.RIGHT;
     }
@@ -166,22 +166,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     switch (this.currentPlayerDirection) {
       case PlayerDirection.UP:
-        bullet.style.top = player.offsetTop - 10 + 'px';
-        bullet.style.left = player.offsetLeft + 24 + 'px';
+        bullet.style.top = player.offsetTop - 14 + 'px';
+        bullet.style.left = player.offsetLeft + 37 + 'px';
         translateY = -100;
         break;
       case PlayerDirection.DOWN:
-        bullet.style.top = player.offsetTop + 44 + 'px';
-        bullet.style.left = player.offsetLeft + 11 + 'px';
+        bullet.style.top = player.offsetTop + 66 + 'px';
+        bullet.style.left = player.offsetLeft + 18 + 'px';
         translateY = 100;
         break;
       case PlayerDirection.RIGHT:
-        bullet.style.top = player.offsetTop + 24 + 'px';
-        bullet.style.left = player.offsetLeft + 44 + 'px';
+        bullet.style.top = player.offsetTop + 36 + 'px';
+        bullet.style.left = player.offsetLeft + 64 + 'px';
         translateX = 100;
         break;
       case PlayerDirection.LEFT:
-        bullet.style.top = player.offsetTop + 11 + 'px';
+        bullet.style.top = player.offsetTop + 18 + 'px';
         bullet.style.left = player.offsetLeft - 10 + 'px';
         translateX = -100;
         break;

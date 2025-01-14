@@ -36,9 +36,9 @@ export class ArenaComponent implements OnInit, OnDestroy {
   private myPlayerPosition: DOMRect;
   private opponentPlayer: PlayerComponent;
   private opponentPlayerPosition: DOMRect;
-  private isKeyHeld: boolean = false;
   private keyBeingHeld: string = '';
-  private intervalId: any = null;
+  private movingIntervalId: any = null;
+  private shootingIntervalId: any = null;
   private router: Router = new Router();
   private destroy: Subject<void> = new Subject();
 
@@ -59,7 +59,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     this.initializePlayer();
 
-    this.socketService.on('MOVE', async ({ playerId, direction }) => {
+    this.socketService.on('KEY_HELD', async ({ playerId, direction }) => {
       if (this.playerId === playerId) {
         this.myPlayer.keyHeld.next(direction);
       } else {
@@ -171,12 +171,19 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   private onKeyDown = (event: KeyboardEvent): void => {
-    if (!this.isKeyHeld) {
-      this.isKeyHeld = true;
+    if (event.key === ' ') {
+      clearInterval(this.shootingIntervalId);
+      this.shootingIntervalId = null;
+      this.shootingIntervalId = setInterval(() => {
+        this.socketService.emit('KEY_HELD', this.playerId + '|' + event.key);
+      }, 20);
+    } else {
+      clearInterval(this.movingIntervalId);
+      this.movingIntervalId = null;
       this.keyBeingHeld = event.key;
-      this.intervalId = setInterval(() => {
+      this.movingIntervalId = setInterval(() => {
         this.socketService.emit(
-          'MOVE',
+          'KEY_HELD',
           this.playerId + '|' + this.keyBeingHeld
         );
       }, 20);
@@ -184,10 +191,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
   };
 
   private onKeyUp = (event: KeyboardEvent): void => {
-    if (this.isKeyHeld && this.keyBeingHeld === event.key) {
-      this.isKeyHeld = false;
-      clearInterval(this.intervalId);
-      this.intervalId = null;
+    if (this.keyBeingHeld === event.key) {
+      clearInterval(this.movingIntervalId);
+      this.movingIntervalId = null;
+    }
+    if (event.key === ' ') {
+      clearInterval(this.shootingIntervalId);
+      this.shootingIntervalId = null;
     }
   };
 
@@ -239,6 +249,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
           this.roundWon = '😔 You lost the match 😔';
         }
       }
+
+      clearInterval(this.movingIntervalId);
 
       setTimeout(() => {
         this.matchWon = '';

@@ -1,7 +1,7 @@
 .player {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   top: calc(50dvh - 20px);
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
 
   .health-bar-container {
     width: 5px;
-    height: 20px;
+    height: 30px;
     border: 1px solid #000000;
     background-color: transparent;
 
