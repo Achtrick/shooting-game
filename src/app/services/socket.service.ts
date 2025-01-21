@@ -9,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://192.168.11.138:5000');
+    this.socket = io('https://shooting-game-server-d55t.onrender.com/');
   }
 
   public emit(event: string, data: any): void {
