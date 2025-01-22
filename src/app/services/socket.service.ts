@@ -29,7 +29,6 @@ export class SocketService {
   }
 
   // CUSTOM FUNCTIONS
-
   public joinMatch(
     playerId: string,
     matchId?: string,
