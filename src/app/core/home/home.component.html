@@ -4,5 +4,16 @@
   <h3>try to eliminate your opponent by destroying their character</h3>
   <h3>first player to reach 3 rounds wins is announced the winner</h3>
   <h3>use "arrow" keys to move and "space" key to shoot</h3>
-  <button (click)="router.navigateByUrl('/arena')">press start</button>
+  <button (click)="router.navigateByUrl('/arena/friendly')">
+    create match
+  </button>
+  <div class="row">
+    <input
+      type="text"
+      placeholder="Join match by id ..."
+      [(ngModel)]="matchId"
+    />
+    <button (click)="router.navigateByUrl('/arena/' + matchId)">&#8227;</button>
+  </div>
+  <button (click)="router.navigateByUrl('/arena/')">random match</button>
 </div>

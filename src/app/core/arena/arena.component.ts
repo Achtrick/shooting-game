@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Match, Room } from '../../models/room.model';
 import { SocketService } from '../../services/socket.service';
@@ -19,9 +19,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
   public loading: boolean = true;
   public opponentDisconnected: boolean = false;
-  public loadingText: string = 'finding match ...';
+  public loadingText: string;
   public room: Room = new Room();
 
+  protected matchId: string;
+  protected friendlyMatch: boolean = false;
   protected match: Match;
   protected round: number = 1;
   protected playerId: string;
@@ -42,9 +44,20 @@ export class ArenaComponent implements OnInit, OnDestroy {
   private router: Router = new Router();
   private destroy: Subject<void> = new Subject();
 
-  constructor(private socketService: SocketService) {}
+  constructor(
+    private socketService: SocketService,
+    private route: ActivatedRoute
+  ) {}
 
   public async ngOnInit(): Promise<void> {
+    this.route.params.subscribe((params: Params) => {
+      this.matchId = params['id'];
+      if (this.matchId === 'friendly') {
+        this.friendlyMatch = true;
+        this.matchId = '';
+      }
+    });
+
     const id = Math.random().toString(36).substr(2, 9);
     const playerId = localStorage.getItem('PLAYER_ID');
 
@@ -54,6 +67,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
       localStorage.setItem('PLAYER_ID', id);
       this.playerId = id;
     }
+
+    this.loadingText = this.friendlyMatch
+      ? 'send this code to your freind: ' + this.playerId
+      : 'finding match ...';
 
     await this.joinMatch();
 
@@ -79,7 +96,9 @@ export class ArenaComponent implements OnInit, OnDestroy {
     return new Promise<void>(async (resolve) => {
       this.room = await this.socketService.joinMatch(
         localStorage.getItem('PLAYER_ID') ??
-          Math.random().toString(36).substr(2, 9)
+          Math.random().toString(36).substr(2, 9),
+        this.matchId,
+        this.friendlyMatch
       );
 
       this.match = {

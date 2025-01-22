@@ -9,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('https://shooting-game-server-d55t.onrender.com/');
+    this.socket = io('http://192.168.11.138:5000');
   }
 
   public emit(event: string, data: any): void {
@@ -30,9 +30,17 @@ export class SocketService {
 
   // CUSTOM FUNCTIONS
 
-  public joinMatch(id: string): Promise<Room> {
+  public joinMatch(
+    playerId: string,
+    matchId?: string,
+    friendlyMatch?: boolean
+  ): Promise<Room> {
     return new Promise((resolve) => {
-      this.emit('JOIN_ROOM', id);
+      this.emit('JOIN_ROOM', {
+        playerId: playerId,
+        matchId: matchId,
+        friendly: friendlyMatch,
+      });
       this.on('MATCH_FOUND', (room) => {
         resolve(room);
       });
