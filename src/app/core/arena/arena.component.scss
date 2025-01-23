@@ -1,6 +1,14 @@
-.container {
+:host {
   width: 100dvw;
   height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+}
+.container {
+  width: 1200px;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,8 +21,8 @@
   .arena {
     background-image: url(/arena-pattern.webp);
     border: 10px solid black;
-    width: 100dvw;
-    height: 100dvh;
+    width: 1200px;
+    height: 600px;
     position: relative;
     user-select: none;
 
@@ -25,7 +33,7 @@
       text-align: center;
       position: absolute;
       top: -5px;
-      left: calc(50dvw - 60px);
+      left: calc(600px - 60px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -41,8 +49,8 @@
     .announcements {
       position: absolute;
       z-index: 1000;
-      width: 100dvw;
-      height: 100dvh;
+      width: 1180px;
+      height: 580px;
       background-color: transparent;
       backdrop-filter: blur(15px);
       display: flex;

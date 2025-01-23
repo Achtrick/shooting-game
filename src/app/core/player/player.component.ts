@@ -73,13 +73,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     const player = this.ragdoll.nativeElement;
 
     if (this.type === PlayerType.PLAYER_A) {
-      player.style.left = 'calc(100dvw - 90px)';
-      player.style.top = 'calc(50dvh - 30px)';
+      player.style.left = 'calc(1200px - 90px)';
+      player.style.top = 'calc(300px - 30px)';
       player.style.transform = 'rotate(180deg)';
       this.currentPlayerDirection = PlayerDirection.LEFT;
     } else {
       player.style.left = '10px';
-      player.style.top = 'calc(50dvh - 30px)';
+      player.style.top = 'calc(300px - 30px)';
       player.style.transform = 'rotate(0deg)';
       this.currentPlayerDirection = PlayerDirection.RIGHT;
     }
