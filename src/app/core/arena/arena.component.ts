@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Match, Room } from '../../models/room.model';
@@ -48,6 +54,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
     private socketService: SocketService,
     private route: ActivatedRoute
   ) {}
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event): void {
+    if (this.playerId) {
+      this.socketService.emit('LEAVE_ROOM', this.playerId);
+    }
+  }
 
   public async ngOnInit(): Promise<void> {
     this.route.params.subscribe((params: Params) => {
