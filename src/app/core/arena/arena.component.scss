@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   background-color: #333;
+  position: relative;
 }
 .container {
   width: 1200px;
@@ -59,6 +60,100 @@
       font-size: 15px;
       top: 0px;
       left: 0px;
+    }
+  }
+}
+.mobile-controls {
+  user-select: none;
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  padding: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .pad {
+    width: 150px;
+    height: 150px;
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .up {
+      transform: rotate(-90deg);
+    }
+    .down {
+      transform: rotate(90deg);
+    }
+    .left {
+      transform: rotate(180deg);
+    }
+    .right {
+      transform: rotate(0deg);
+    }
+
+    a[name="pad-button"] {
+      background-color: #333;
+      box-shadow: 0px 0px 10px #333;
+      border-radius: 50%;
+      border: 1px solid white;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        -webkit-touch-callout: none; /* Prevents callout (e.g., save image popup) on iOS Safari */
+        -webkit-user-select: none; /* Prevents text/image selection */
+        user-select: none; /* Prevents text/image selection */
+        pointer-events: none;
+      }
+    }
+  }
+  .shoot {
+    width: 80px;
+    height: 80px;
+    background-color: #333;
+    box-shadow: 0px 0px 10px #333;
+    border-radius: 50%;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      -webkit-touch-callout: none; /* Prevents callout (e.g., save image popup) on iOS Safari */
+      -webkit-user-select: none; /* Prevents text/image selection */
+      user-select: none; /* Prevents text/image selection */
+      pointer-events: none;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .container {
+    width: 650px;
+    height: 350px;
+    .arena {
+      width: 650px;
+      height: 350px;
+
+      .score {
+        left: calc(325px - 60px);
+      }
+      .announcements {
+        width: 630px;
+        height: 330px;
+      }
     }
   }
 }

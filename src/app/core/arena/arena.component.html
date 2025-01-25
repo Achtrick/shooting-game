@@ -41,3 +41,54 @@
     </ng-template>
   </ng-template>
 </div>
+<div
+  class="mobile-controls"
+  *ngIf="isMobile && !loading && !(roundWon.length || matchWon.length)"
+>
+  <div class="pad">
+    <a></a>
+    <a
+      class="up"
+      name="pad-button"
+      (touchstart)="mobileKeyHeld('ArrowUp')"
+      (touchend)="mobileKeyReleased('ArrowUp')"
+    >
+      <img src="arrow.svg"
+    /></a>
+    <a></a>
+    <a
+      class="left"
+      name="pad-button"
+      (touchstart)="mobileKeyHeld('ArrowLeft')"
+      (touchend)="mobileKeyReleased('ArrowLeft')"
+    >
+      <img src="arrow.svg"
+    /></a>
+    <a></a>
+    <a
+      class="right"
+      name="pad-button"
+      (touchstart)="mobileKeyHeld('ArrowRight')"
+      (touchend)="mobileKeyReleased('ArrowRight')"
+    >
+      <img src="arrow.svg"
+    /></a>
+    <a></a>
+    <a
+      class="down"
+      name="pad-button"
+      (touchstart)="mobileKeyHeld('ArrowDown')"
+      (touchend)="mobileKeyReleased('ArrowDown')"
+    >
+      <img src="arrow.svg"
+    /></a>
+    <a></a>
+  </div>
+  <div
+    class="shoot"
+    (touchstart)="mobileKeyHeld(' ')"
+    (touchend)="mobileKeyReleased(' ')"
+  >
+    <img src="shoot.svg" />
+  </div>
+</div>

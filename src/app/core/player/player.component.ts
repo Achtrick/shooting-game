@@ -11,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'player',
@@ -36,10 +37,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   protected PlayerType = PlayerType;
 
+  private isMobile: boolean = false;
   private currentPlayerDirection: PlayerDirection;
   private gunSound: HTMLAudioElement;
 
-  constructor() {
+  constructor(private uiService: UiService) {
     try {
       this.gunSound = new Audio('/gun.mp3');
       this.gunSound.load();
@@ -47,6 +49,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.isMobile = this.uiService.isMobile;
+
     this.keyHeld.subscribe((key) => {
       if (!this.disableControls) {
         if (key === ' ') {
@@ -72,14 +76,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   public initializePlayer = (): void => {
     const player = this.ragdoll.nativeElement;
 
+    player.style.top = this.isMobile
+      ? 'calc(175px - 30px)'
+      : 'calc(300px - 30px)';
     if (this.type === PlayerType.PLAYER_A) {
-      player.style.left = 'calc(1200px - 90px)';
-      player.style.top = 'calc(300px - 30px)';
+      player.style.left = this.isMobile
+        ? 'calc(650px - 90px)'
+        : 'calc(1200px - 90px)';
       player.style.transform = 'rotate(180deg)';
       this.currentPlayerDirection = PlayerDirection.LEFT;
     } else {
       player.style.left = '10px';
-      player.style.top = 'calc(300px - 30px)';
       player.style.transform = 'rotate(0deg)';
       this.currentPlayerDirection = PlayerDirection.RIGHT;
     }

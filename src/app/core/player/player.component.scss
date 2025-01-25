@@ -25,3 +25,9 @@
     height: calc(100% - 7px);
   }
 }
+
+@media (max-width: 1000px) {
+  .player {
+    top: calc(175px - 20px);
+  }
+}

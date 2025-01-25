@@ -10,6 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Match, Room } from '../../models/room.model';
 import { SocketService } from '../../services/socket.service';
+import { UiService } from '../../services/ui.service';
 import { PlayerComponent, PlayerType } from '../player/player.component';
 
 @Component({
@@ -23,6 +24,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   @ViewChild('playerA') playerA!: PlayerComponent;
   @ViewChild('playerB') playerB!: PlayerComponent;
 
+  public isMobile: boolean = false;
   public loading: boolean = true;
   public opponentDisconnected: boolean = false;
   public loadingText: string;
@@ -52,8 +54,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
   constructor(
     private socketService: SocketService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private uiService: UiService
+  ) {
+    this.isMobile = this.uiService.isMobile;
+  }
 
   @HostListener('window:beforeunload', ['$event'])
   unloadHandler(event: Event): void {
@@ -291,6 +296,16 @@ export class ArenaComponent implements OnInit, OnDestroy {
       }, 5000);
     }
   }
+
+  public mobileKeyHeld = (key: string) => {
+    const event = new KeyboardEvent('keydown', { key });
+    this.onKeyDown(event);
+  };
+
+  public mobileKeyReleased = (key: string) => {
+    const event = new KeyboardEvent('keyup', { key });
+    this.onKeyUp(event);
+  };
 
   public ngOnDestroy(): void {
     this.destroy.next();
