@@ -1,0 +1,21 @@
+{
+  "name": "Multiplayer Shooting Game",
+  "short_name": "Shooting Game",
+  "description": "A multiplayer shooting game where players control fighters in an arena to eliminate opponents.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#dd6602",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
