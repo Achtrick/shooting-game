@@ -6,6 +6,15 @@
     </div>
     <ng-template #matchFound>
       <div class="arena">
+        <div
+          [ngStyle]="{
+            color: playerType === PlayerType.PLAYER_A ? 'RED' : 'BLUE'
+          }"
+          class="player-type-announcement"
+          *ngIf="playerTypeAnnouncement"
+        >
+          You are {{ playerType === PlayerType.PLAYER_A ? "RED" : "BLUE" }}
+        </div>
         <div class="round">
           <p>{{ "round: " + round }}</p>
         </div>
@@ -50,8 +59,8 @@
     <a
       class="up"
       name="pad-button"
-      (touchstart)="mobileKeyHeld('ArrowUp')"
-      (touchend)="mobileKeyReleased('ArrowUp')"
+      (pointerdown)="mobileKeyHeld('ArrowUp')"
+      (pointerup)="mobileKeyReleased('ArrowUp')"
     >
       <img src="arrow.svg"
     /></a>
@@ -59,8 +68,8 @@
     <a
       class="left"
       name="pad-button"
-      (touchstart)="mobileKeyHeld('ArrowLeft')"
-      (touchend)="mobileKeyReleased('ArrowLeft')"
+      (pointerdown)="mobileKeyHeld('ArrowLeft')"
+      (pointerup)="mobileKeyReleased('ArrowLeft')"
     >
       <img src="arrow.svg"
     /></a>
@@ -68,8 +77,8 @@
     <a
       class="right"
       name="pad-button"
-      (touchstart)="mobileKeyHeld('ArrowRight')"
-      (touchend)="mobileKeyReleased('ArrowRight')"
+      (pointerdown)="mobileKeyHeld('ArrowRight')"
+      (pointerup)="mobileKeyReleased('ArrowRight')"
     >
       <img src="arrow.svg"
     /></a>
@@ -77,8 +86,8 @@
     <a
       class="down"
       name="pad-button"
-      (touchstart)="mobileKeyHeld('ArrowDown')"
-      (touchend)="mobileKeyReleased('ArrowDown')"
+      (pointerdown)="mobileKeyHeld('ArrowDown')"
+      (pointerup)="mobileKeyReleased('ArrowDown')"
     >
       <img src="arrow.svg"
     /></a>
@@ -86,8 +95,8 @@
   </div>
   <div
     class="shoot"
-    (touchstart)="mobileKeyHeld(' ')"
-    (touchend)="mobileKeyReleased(' ')"
+    (pointerdown)="mobileKeyHeld(' ')"
+    (pointerup)="mobileKeyReleased(' ')"
   >
     <img src="shoot.svg" />
   </div>

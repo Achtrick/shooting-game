@@ -27,6 +27,13 @@
     position: relative;
     user-select: none;
 
+    .player-type-announcement {
+      width: 200px;
+      text-align: center;
+      position: absolute;
+      top: 50px;
+      left: calc(600px - 100px);
+    }
     .score {
       background-color: transparent;
       width: 120px;
@@ -110,9 +117,9 @@
         width: 90%;
         height: 90%;
         object-fit: contain;
-        -webkit-touch-callout: none; /* Prevents callout (e.g., save image popup) on iOS Safari */
-        -webkit-user-select: none; /* Prevents text/image selection */
-        user-select: none; /* Prevents text/image selection */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
         pointer-events: none;
       }
     }
@@ -131,9 +138,9 @@
       width: 80%;
       height: 80%;
       object-fit: contain;
-      -webkit-touch-callout: none; /* Prevents callout (e.g., save image popup) on iOS Safari */
-      -webkit-user-select: none; /* Prevents text/image selection */
-      user-select: none; /* Prevents text/image selection */
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
       pointer-events: none;
     }
   }
@@ -147,6 +154,9 @@
       width: 650px;
       height: 350px;
 
+      .player-type-announcement {
+        left: calc(325px - 100px);
+      }
       .score {
         left: calc(325px - 60px);
       }

@@ -13,6 +13,7 @@ import { UiService } from '../../services/ui.service';
 })
 export class HomeComponent {
   protected isLandscape: boolean = false;
+  protected alert = alert;
 
   constructor(private uiService: UiService) {
     this.isLandscape = this.uiService.isLandscape;

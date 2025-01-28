@@ -23,6 +23,10 @@
   img {
     width: calc(100% - 7px);
     height: calc(100% - 7px);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
   }
 }
 

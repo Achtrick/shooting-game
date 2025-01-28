@@ -36,6 +36,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   protected round: number = 1;
   protected playerId: string;
   protected playerType: PlayerType;
+  protected playerTypeAnnouncement: boolean = true;
   protected PlayerType = PlayerType;
   protected myPlayerHealth: number = 100;
   protected opponentPlayerHealth: number = 100;
@@ -61,7 +62,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  unloadHandler(event: Event): void {
+  unloadHandler(): void {
     if (this.playerId) {
       this.socketService.emit('LEAVE_ROOM', this.playerId);
     }
@@ -93,6 +94,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
     await this.joinMatch();
 
     this.initializePlayer();
+
+    setTimeout(() => {
+      this.playerTypeAnnouncement = false;
+    }, 3000);
 
     this.socketService.on('KEY_HELD', async ({ playerId, direction }) => {
       if (this.playerId === playerId) {
@@ -248,6 +253,12 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   private reset(winner: PlayerComponent): void {
+    [' ', 'ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].forEach(
+      (key: string) => {
+        this.mobileKeyReleased(key);
+      }
+    );
+
     this.round++;
 
     const recoverHealth = () => {
@@ -288,6 +299,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
       }
 
       clearInterval(this.movingIntervalId);
+      clearInterval(this.shootingIntervalId);
 
       setTimeout(() => {
         this.matchWon = '';
@@ -298,6 +310,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   public mobileKeyHeld = (key: string) => {
+    this.vibrate();
     const event = new KeyboardEvent('keydown', { key });
     this.onKeyDown(event);
   };
@@ -306,6 +319,12 @@ export class ArenaComponent implements OnInit, OnDestroy {
     const event = new KeyboardEvent('keyup', { key });
     this.onKeyUp(event);
   };
+
+  public vibrate(): void {
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
+    }
+  }
 
   public ngOnDestroy(): void {
     this.destroy.next();

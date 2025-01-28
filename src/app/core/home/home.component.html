@@ -14,7 +14,13 @@
         placeholder="Join match by id ..."
         [(ngModel)]="matchId"
       />
-      <button (click)="router.navigateByUrl('/arena/' + matchId)">
+      <button
+        (click)="
+          matchId
+            ? router.navigateByUrl('/arena/' + matchId)
+            : alert('Enter your friend match code first (^-^) ')
+        "
+      >
         <img src="arrow.svg" />
       </button>
     </div>

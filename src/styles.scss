@@ -3,6 +3,7 @@ html {
   margin: 0px;
 }
 * {
+  touch-action: manipulation;
   font-family: "Press Start 2P", serif;
   box-sizing: border-box;
   text-transform: uppercase;
